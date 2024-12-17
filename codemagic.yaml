@@ -143,37 +143,51 @@ workflows:
       - name: Set Android SDK location
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+
       - name: Install npm dependencies
         script: |
-          npm install expo-cli@6.3.0
           npm install
+          npm install expo-cli@6.3.0 --global
+
       - name: Install sharp-cli globally
         script: |
-          npm install -g sharp-cli
+          npm install -g sharp-cli@2.1.0
+
       - name: Install compatible expo-system-ui version
         script: |
           npm install expo-system-ui@3.0.0
+
+      - name: Clear Metro Bundler Cache
+        script: |
+          npx expo start --clear
+
       - name: Validate Metro Configuration
         script: |
           if [ ! -f metro.config.js ]; then
             echo "module.exports = require('@expo/metro-config').getDefaultConfig(__dirname);" > metro.config.js
           fi
+
       - name: Validate Expo project setup
         script: |
           npx expo doctor || true
+
       - name: Run Expo Prebuild
         script: |
-          npx expo prebuild
+          npx expo prebuild --clean
+
       - name: Grant Gradlew Executable Permissions
         script: |
           cd android
           chmod +x gradlew
+
       - name: Build Android release
         script: |
           cd android
           ./gradlew assembleRelease
+
     artifacts:
       - android/app/build/outputs/**/*.apk
+
     publishing:
       email:
         recipients:
