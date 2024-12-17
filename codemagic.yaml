@@ -229,9 +229,9 @@ workflows:
         script: |
           npm install expo-system-ui@4.0.6
 
-      - name: Clear Metro Bundler Cache
-        script: |
-          npx expo start --clear
+      # - name: Clear Metro Bundler Cache
+      #   script: |
+      #     npx expo start --clear
 
       - name: Validate Metro Configuration
         script: |
