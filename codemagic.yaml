@@ -131,6 +131,72 @@
   #       notify:
   #         success: true
   #         failure: false
+# workflows:
+#   react-native-android:
+#     name: React Native Android
+#     max_build_duration: 120
+#     instance_type: mac_mini_m2
+#     environment:
+#       vars:
+#         PACKAGE_NAME: "com.guptaankit9.ankitproject"
+#     scripts:
+#       - name: Set Android SDK location
+#         script: |
+#           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+
+#       - name: Install npm dependencies
+#         script: |
+#           npm install
+#           npm install expo-cli@6.3.0 --global
+
+#       - name: Install sharp-cli globally
+#         script: |
+#           npm install -g sharp-cli@2.1.0
+
+#       - name: Install compatible expo-system-ui version
+#         script: |
+#           npm install expo-system-ui@3.0.0
+
+#       - name: Clear Metro Bundler Cache
+#         script: |
+#           npx expo start --clear
+
+#       - name: Validate Metro Configuration
+#         script: |
+#           if [ ! -f metro.config.js ]; then
+#             echo "module.exports = require('@expo/metro-config').getDefaultConfig(__dirname);" > metro.config.js
+#           fi
+
+#       - name: Validate Expo project setup
+#         script: |
+#           npx expo doctor || true
+
+#       - name: Run Expo Prebuild
+#         script: |
+#           npx expo prebuild --clean
+
+#       - name: Grant Gradlew Executable Permissions
+#         script: |
+#           cd android
+#           chmod +x gradlew
+
+#       - name: Build Android release
+#         script: |
+#           cd android
+#           ./gradlew assembleRelease
+
+#     artifacts:
+#       - android/app/build/outputs/**/*.apk
+
+#     publishing:
+#       email:
+#         recipients:
+#           - user_1@example.com
+#           - user_2@example.com
+#         notify:
+#           success: true
+#           failure: false
+
 workflows:
   react-native-android:
     name: React Native Android
@@ -148,6 +214,12 @@ workflows:
         script: |
           npm install
           npm install expo-cli@6.3.0 --global
+          
+          # Update Expo-related packages for compatibility
+          npm install @expo/config@^10.0.0
+          npm install @expo/metro-config@~0.19.0
+          npm install expo@~52.0.19
+          npm install expo-system-ui@~4.0.6
 
       - name: Install sharp-cli globally
         script: |
