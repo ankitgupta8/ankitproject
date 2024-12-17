@@ -227,7 +227,7 @@ workflows:
 
       - name: Install compatible expo-system-ui version
         script: |
-          npm install expo-system-ui@3.0.0
+          npm install expo-system-ui@4.0.6
 
       - name: Clear Metro Bundler Cache
         script: |
